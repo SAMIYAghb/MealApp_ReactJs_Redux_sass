@@ -1,0 +1,29 @@
+@import '../../App.scss';
+
+.search-form{
+    background:linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.7)),  url("../../assets/images/header_image.jpg")no-repeat fixed center ;
+
+    height: calc(100vh - 41.6px);
+    position: relative;
+    color: $clr-white;
+    .form-detail{
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);              
+        text-align: center; 
+        width: 60%;
+        form input{
+            border-radius: 1.5rem;
+            padding: .5rem 1rem;
+            border: 1px solid $clr-gray;
+        }
+        button{
+            padding: .3rem .4rem;
+            border-radius: 50%;
+            background-color: $clr-orange;
+            color: white;
+            margin-left: 1rem;
+        }
+    }
+}

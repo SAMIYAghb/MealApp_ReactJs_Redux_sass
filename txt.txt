@@ -1,0 +1,210 @@
+************UseContext + UseRedux**************
+
+
+******1-create actions //actions.js
+export const FETCH_CATEGORY_BEGIN ='FETCH_CATEGORY_BEGIN';
+export const FETCH_CATEGORY_SUCCESS ='FETCH_CATEGORY_SUCCESS ';
+export const FETCH_CATEGORY_ERROR ='FETCH_CATEGORY_ERROR';
+
+
+******2-create MealReducer //MealReducer.js
+const MealReducer = (state, action) => {
+    const { type, payload } = action;
+    
+	switch (type) {
+        case FETCH_CATEGORY_BEGIN:
+            return {
+                ...state,
+                categoryLoading: true
+            }
+        case FETCH_CATEGORY_SUCCESS:
+            return {
+                ...state,
+                categories: action.payload,
+                categoryLoading: false
+            }
+        case FETCH_CATEGORY_ERROR:
+            return {
+                ...state,
+                categoryLoading: false,
+                categoryError: true
+            }
+        default:
+            return state;
+	}
+  }
+  
+  export default MealReducer
+
+
+
+******3-createContext  //MealContext.js
+
+ import React, { createContext , useContext, useEffect, useReducer} from "react"
+import MealReducer from './../reducers/mealReducer';
+
+const initialState = {
+    categories: [],
+    categoryLoading: false,
+    categoryError: false,
+    categoryMeals: [],
+    categoryMealsLoading: false,
+    categoryMealsError: false,
+  };
+
+
+ const MealContext = createContext({});
+
+export const MealProvider =({children})=>{
+    const [state, dispatch] = useReducer(MealReducer, initialState)
+
+    useEffect(() => {
+    
+      }
+    , [])
+
+
+    return(
+        <MealContext.Provider value={{
+            ...state,
+            dispatch
+        }}>
+            {children}
+        </MealContext.Provider>
+    )
+    
+}
+
+
+export const useMealContext = ()=>{
+    return useContext(MealContext )
+}
+
+
+
+******4-MealsActions.js
+
+import axios from './../api/axios';
+import { FETCH_CATEGORY_BEGIN,
+    FETCH_CATEGORY_SUCCESS,
+    FETCH_CATEGORY_ERROR
+  } from './actions/actions';
+import { CATEGORIES_URL } from './../utils/constants';
+
+
+export const startFetchCategories = async(dispatch)=>{
+    try{
+        dispatch({type: FETCH_CATEGORY_BEGIN});
+        const response = await axios.get(`${CATEGORIES_URL}`)
+
+        dispatch({type: FETCH_CATEGORY_SUCCESS, payload: response.data.categories});
+         console.log(response.data.categories);
+ 
+    }catch(error){
+        dispatch({type: FETCH_CATEGORY_ERROR, payload: error.message})
+    }
+}
+  
+
+
+******5- //MealContext.js
+useEffect(() => {
+    startFetchCategories(dispatch)
+      }
+    , [])
+
+
+    return(
+        <MealContext.Provider value={{
+            ...state,
+            dispatch,
+            startFetchCategories
+        }}>
+            {children}
+        </MealContext.Provider>
+    )
+
+
+*****6- index.js
+    <SidebarProvider>
+    <MealProvider>
+      <App />
+    </MealProvider>
+  </SidebarProvider>
+
+
+*****7-categoryListe.jsx
+import React from 'react'
+import { useMealContext } from '../../context/mealContext'
+import './Category.scss'
+
+
+
+
+const CategoryList = () => {
+   const {categories} = useMealContext();
+
+  
+  return (
+    <div className='categories'>
+      <div className="container">
+         <h2>CategoryList</h2>
+         <div className="categories-items grid">
+         {
+          categories.map(category=>( 
+           
+              <div  key={category.idCategory} className="category-item">
+                  <img src={category.strCategoryThumb} alt="" className='category-img'/>
+                  <h5 className='text-center py-3'>{category.strCategory}</h5>
+                  {/* <h5>{category.strCategoryDescription}</h5> */}
+              </div>
+              
+          ))
+         }
+         </div>
+      </div>
+      
+    </div>
+  )
+}
+
+export default CategoryList
+.categories-items {
+    @media screen and (min-width: 420px){
+        grid-template-columns: repeat(2, 1fr);
+        column-gap: 24px;
+    }
+
+    @media screen and (min-width: 576px){
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    @media screen and (min-width: 992px){
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    @media screen and (min-width: 1080px){
+        grid-template-columns: repeat(5, 1fr);
+    }
+
+    .category-item{
+        background-color: $clr-white;
+        position: relative;
+        margin: 12px auto;
+        box-shadow: rgba(149, 157, 165, 0.1) 0px 8px 24px;
+        border-radius: 3px;
+        box-shadow: rgba(99, 99, 99, 0.09) 0px 2px 8px 0px;
+
+        .category-img{
+            height: 150px;
+            img{
+                padding: 12px;
+                transition: $transition;
+            }
+
+            &:hover{   
+                    transform: scale(1.2);   
+            }
+        }
+    }
+}

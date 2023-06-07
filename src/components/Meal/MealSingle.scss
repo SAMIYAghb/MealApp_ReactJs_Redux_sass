@@ -1,0 +1,58 @@
+@import '../../App.scss';
+
+
+.meal-single{
+    .single-nav{
+        padding: .2rem .5rem;
+        margin-top: 2rem;
+    }
+    .single-meal-detail{
+        justify-content: space-between;
+        margin-bottom: 30px;
+        .left{
+            max-width: 45%;
+            margin-right: 2rem;
+            .info{
+                h3{
+                    margin-bottom: 30px;
+                }
+               
+                span{
+                    font-weight: bold;
+                }
+                .tags{
+                    margin-top: 1.5rem;
+                    span{
+                        
+                        border: 1px solid $clr-orange;
+                        background:$clr-orange;
+                        padding: .5rem 1rem;
+                        border-radius: .7rem;
+                        color:#fff;
+                    }
+                }
+            }
+        }
+        .ingredient{
+            h4{
+                margin-top: 1.5rem;
+                margin-bottom: .5rem;
+            }
+            p{
+                font-size: 14px;
+            }
+        }
+        .details-img{
+            min-height: 420px;           
+            max-width: 500px;
+            overflow: hidden;
+            height: 100%;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50px;
+        }
+   
+    }
+    .instruction{
+        margin-bottom: 3rem;
+    }
+}

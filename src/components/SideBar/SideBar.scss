@@ -1,0 +1,32 @@
+
+@import '../../App.scss';
+.sidebar{
+    position: fixed;
+    right: 0;
+    top: 40px;
+    width: 30%;
+    height: 100%;
+    background-color: $clr-white;
+    z-index: 1000;
+    padding: 24px;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    transform: translateX(100%);
+    transition: $transition;
+
+    &-visible{
+        transform: translateX(0);
+    }
+    .sidebar-title{
+        color: $clr-orange;
+        margin: 1.5rem 0 ;
+    }
+    .close-btn{
+        color: $clr-gray;
+    }
+    .side-content{
+        .side-nav{
+
+        }
+    }
+
+}
